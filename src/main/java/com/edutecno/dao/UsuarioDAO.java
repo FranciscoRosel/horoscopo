@@ -164,4 +164,26 @@ public class UsuarioDAO {
             e.printStackTrace();
         }
     }
+    public String obtenerAnimalPorFecha(java.util.Date fechaNacimiento) {
+        String sql = "SELECT ANIMAL FROM HOROSCOPO WHERE ? BETWEEN FECHA_INICIO AND FECHA_FIN";
+        String animal = null;
+
+        try (Connection conn = ConexionDB.getConexion();
+             PreparedStatement pstm = conn.prepareStatement(sql)) {
+
+            pstm.setDate(1, new java.sql.Date(fechaNacimiento.getTime()));
+
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    animal = rs.getString("ANIMAL");
+                } else {
+                    System.out.println("No se encontró un rango de fechas válido en la tabla HOROSCOPO para la fecha: " + fechaNacimiento);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return animal;
+    }
 }
