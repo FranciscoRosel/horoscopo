@@ -17,6 +17,8 @@ import java.util.Date;
 public class RegistrarUsuarioServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html; charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         try {
             String nombre = request.getParameter("nombre");
             String username = request.getParameter("username");
