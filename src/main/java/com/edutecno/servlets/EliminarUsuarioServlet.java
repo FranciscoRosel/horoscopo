@@ -21,10 +21,8 @@ public class EliminarUsuarioServlet extends HttpServlet {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         usuarioDAO.eliminarUsuario(userId);
 
-        // Invalidar la sesión después de eliminar el usuario
         session.invalidate();
 
-        // Redirigir al index.jsp con un parámetro en la URL
         response.sendRedirect("index.jsp?alert=Cuenta eliminada exitosamente");
     }
 }

@@ -21,7 +21,6 @@ public class ListarUsuariosServlet extends HttpServlet {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         List<Usuario> usuarios = usuarioDAO.obtenerUsuarios();
 
-        // Verificar que los objetos sean del tipo correcto
         for (Usuario usuario : usuarios) {
             System.out.println("Usuario: " + usuario);
         }

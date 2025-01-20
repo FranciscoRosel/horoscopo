@@ -11,7 +11,6 @@ import java.util.List;
 
 public class UsuarioDAO {
 
-    // Obtener lista de usuarios
     public List<Usuario> obtenerUsuarios() {
         List<Usuario> usuarios = new ArrayList<>();
         String sql = "SELECT id, nombre, username, email, fecha_nacimiento, password, animal FROM usuarios";
@@ -38,7 +37,6 @@ public class UsuarioDAO {
         return usuarios;
     }
 
-    // Crear usuario
     public void crearUsuario(Usuario usuario) {
         String sql = "INSERT INTO usuarios (nombre, username, email, fecha_nacimiento, password, animal) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConexionDB.getConexion();
@@ -56,7 +54,6 @@ public class UsuarioDAO {
         }
     }
 
-    // Eliminar usuario
     public void eliminarUsuario(int id) {
         String sql = "DELETE FROM usuarios WHERE id = ?";
 
@@ -70,27 +67,23 @@ public class UsuarioDAO {
         }
     }
 
-    // Modificar cuenta
     public void modificarCuenta(Usuario usuario) {
         String sql = "UPDATE usuarios SET nombre = ?, username = ?, email = ?, password = ?, fecha_nacimiento = ?, animal = ? WHERE id = ?";
 
         try (Connection conn = ConexionDB.getConexion();
              PreparedStatement pstm = conn.prepareStatement(sql)) {
 
-            // Obtener el nuevo animal del horóscopo desde la base de datos
             String nuevoAnimal = obtenerAnimalPorFecha(usuario.getFechaNacimiento());
-            usuario.setAnimal(nuevoAnimal); // Actualizar en el objeto usuario
+            usuario.setAnimal(nuevoAnimal);
 
-            // Configurar los parámetros
             pstm.setString(1, usuario.getNombre());
             pstm.setString(2, usuario.getUsername());
             pstm.setString(3, usuario.getEmail());
             pstm.setString(4, usuario.getPassword());
-            pstm.setDate(5, new java.sql.Date(usuario.getFechaNacimiento().getTime())); // Convertir a java.sql.Date
+            pstm.setDate(5, new java.sql.Date(usuario.getFechaNacimiento().getTime()));
             pstm.setString(6, usuario.getAnimal());
             pstm.setInt(7, usuario.getId());
 
-            // Ejecutar la actualización
             pstm.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -156,23 +149,7 @@ public class UsuarioDAO {
         }
         return usuario;
     }
-    public void actualizarCuenta(Usuario usuario) {
-        String sql = "UPDATE usuarios SET nombre = ?, username = ?, email = ?, password = ? WHERE id = ?";
 
-        try (Connection conn = ConexionDB.getConexion();
-             PreparedStatement pstm = conn.prepareStatement(sql)) {
-
-            pstm.setString(1, usuario.getNombre());
-            pstm.setString(2, usuario.getUsername());
-            pstm.setString(3, usuario.getEmail());
-            pstm.setString(4, usuario.getPassword());
-            pstm.setInt(5, usuario.getId());
-
-            pstm.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
     public String obtenerAnimalPorFecha(java.util.Date fechaNacimiento) {
         String sql = "SELECT ANIMAL FROM HOROSCOPO WHERE ? BETWEEN FECHA_INICIO AND FECHA_FIN";
         String animal = null;

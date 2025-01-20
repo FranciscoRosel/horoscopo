@@ -21,7 +21,6 @@ public class RegistrarUsuarioServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         try {
-            // Obtener los datos del formulario
             String nombre = request.getParameter("nombre");
             String username = request.getParameter("username");
             String email = request.getParameter("email");
@@ -29,7 +28,6 @@ public class RegistrarUsuarioServlet extends HttpServlet {
             String repeatPassword = request.getParameter("repeatPassword");
             String fechaNacimientoStr = request.getParameter("fechaNacimiento");
 
-            // Validar que las contraseñas coincidan
             if (!password.equals(repeatPassword)) {
                 request.setAttribute("alertMessage", "Las contraseñas no coinciden.");
                 request.setAttribute("redirect", false);
@@ -37,21 +35,16 @@ public class RegistrarUsuarioServlet extends HttpServlet {
                 return;
             }
 
-            // Convertir fecha de nacimiento
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date fechaNacimiento = sdf.parse(fechaNacimientoStr);
 
-            // Obtener el animal del horóscopo desde la base de datos
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             String animal = usuarioDAO.obtenerAnimalPorFecha(fechaNacimiento);
 
-            // Crear el objeto usuario con el animal obtenido
             Usuario usuario = new Usuario(0, nombre, username, email, fechaNacimiento, password, animal);
 
-            // Guardar el usuario en la base de datos
             usuarioDAO.crearUsuario(usuario);
 
-            // Redirigir con mensaje de éxito
             request.setAttribute("alertMessage", "Usuario registrado exitosamente");
             request.setAttribute("redirect", true); // Indicar redirección
             request.getRequestDispatcher("registrarse.jsp").forward(request, response);

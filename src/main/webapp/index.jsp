@@ -21,7 +21,6 @@
 
 <a href="registrarse.jsp">Registrarse</a>
 
-<!-- Cuadro de diálogo personalizado -->
 <%
     String errorMessage = (String) request.getAttribute("error");
     String alertMessage = request.getParameter("alert");
@@ -33,26 +32,23 @@
 </div>
 
 <script>
-    // Mostrar cuadro de diálogo personalizado
     function showCustomAlert(message) {
         document.getElementById("alertMessage").innerText = message;
         document.getElementById("customAlert").style.display = "block";
         document.getElementById("overlay").style.display = "block";
     }
 
-    // Cerrar el cuadro de diálogo personalizado
+
     function closeCustomAlert() {
         document.getElementById("customAlert").style.display = "none";
         document.getElementById("overlay").style.display = "none";
     }
 
     <% if (errorMessage != null) { %>
-    // Mostrar mensaje de error
     window.onload = function() {
         showCustomAlert("<%= errorMessage %>");
     };
     <% } else if (alertMessage != null) { %>
-    // Mostrar mensaje de alerta
     window.onload = function() {
         showCustomAlert("<%= alertMessage %>");
     };

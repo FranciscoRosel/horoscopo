@@ -14,7 +14,6 @@
 <ul>
     <li><a href="consultaHoroscopo">Consultar Horóscopo</a></li>
     <li><a href="listarUsuarios">Listar Usuarios</a></li>
-    <li><a href="crearUsuario.jsp">Crear Usuario</a></li>
     <li><a href="buscarUsuario.jsp">Buscar Usuario</a></li>
     <li><a href="modificarCuenta">Modificar Cuenta</a></li>
     <li><a href="eliminarUsuario.jsp">Eliminar Cuenta</a></li>

@@ -25,13 +25,13 @@ public class LoginServlet extends HttpServlet {
         Usuario usuario = usuarioDAO.validarUsuario(username, password);
 
         if (usuario != null) {
-            // Credenciales correctas, establecer sesión
+
             HttpSession session = request.getSession();
             session.setAttribute("usuario", usuario);
             session.setAttribute("animal", usuario.getAnimal());
             response.sendRedirect("menu.jsp");
         } else {
-            // Credenciales incorrectas, pasar mensaje al index.jsp
+
             request.setAttribute("error", "Usuario o contraseña incorrectos.");
             request.getRequestDispatcher("index.jsp").forward(request, response);
         }

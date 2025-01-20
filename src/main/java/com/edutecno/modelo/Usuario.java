@@ -10,7 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario {
-    private int id; // Asegúrate de que este campo existe y es un entero
+    private int id;
     private String nombre;
     private String username;
     private String email;
