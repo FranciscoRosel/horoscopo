@@ -5,9 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="styles.css">
-    <meta charset="UTF-8">
-    <title>Inicio de Sesión</title>
+    <title>Iniciar Sesión</title>
 </head>
 <body>
 <h1>Iniciar Sesión</h1>
@@ -18,11 +16,48 @@
     <label for="password">Contraseña:</label>
     <input type="password" id="password" name="password" required>
     <br>
-    <button type="submit">Ingresar</button>
+    <button type="submit">Iniciar Sesión</button>
 </form>
-<p style="color: red;">
-    ${requestScope.error}
-</p>
-<p>¿No tienes una cuenta? <a href="registrarse.jsp">Crea una aquí</a>.</p>
+
+<a href="registrarse.jsp">Registrarse</a>
+
+<!-- Cuadro de diálogo personalizado -->
+<%
+    String errorMessage = (String) request.getAttribute("error");
+    String alertMessage = request.getParameter("alert");
+%>
+<div id="overlay" style="display:none;"></div>
+<div id="customAlert" style="display:none;">
+    <p id="alertMessage"></p>
+    <button onclick="closeCustomAlert()">Aceptar</button>
+</div>
+
+<script>
+    // Mostrar cuadro de diálogo personalizado
+    function showCustomAlert(message) {
+        document.getElementById("alertMessage").innerText = message;
+        document.getElementById("customAlert").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+    }
+
+    // Cerrar el cuadro de diálogo personalizado
+    function closeCustomAlert() {
+        document.getElementById("customAlert").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+    }
+
+    <% if (errorMessage != null) { %>
+    // Mostrar mensaje de error
+    window.onload = function() {
+        showCustomAlert("<%= errorMessage %>");
+    };
+    <% } else if (alertMessage != null) { %>
+    // Mostrar mensaje de alerta
+    window.onload = function() {
+        showCustomAlert("<%= alertMessage %>");
+    };
+    <% } %>
+</script>
+
 </body>
 </html>

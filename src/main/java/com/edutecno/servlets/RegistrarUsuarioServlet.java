@@ -19,7 +19,9 @@ public class RegistrarUsuarioServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html; charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+
         try {
+            // Obtener los datos del formulario
             String nombre = request.getParameter("nombre");
             String username = request.getParameter("username");
             String email = request.getParameter("email");
@@ -27,8 +29,10 @@ public class RegistrarUsuarioServlet extends HttpServlet {
             String repeatPassword = request.getParameter("repeatPassword");
             String fechaNacimientoStr = request.getParameter("fechaNacimiento");
 
+            // Validar que las contraseñas coincidan
             if (!password.equals(repeatPassword)) {
-                request.setAttribute("mensaje", "Las contraseñas no coinciden.");
+                request.setAttribute("alertMessage", "Las contraseñas no coinciden.");
+                request.setAttribute("redirect", false);
                 request.getRequestDispatcher("registrarse.jsp").forward(request, response);
                 return;
             }
@@ -37,25 +41,25 @@ public class RegistrarUsuarioServlet extends HttpServlet {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date fechaNacimiento = sdf.parse(fechaNacimientoStr);
 
-            // Obtener el animal del horóscopo
+            // Obtener el animal del horóscopo desde la base de datos
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             String animal = usuarioDAO.obtenerAnimalPorFecha(fechaNacimiento);
 
-            if (animal == null) {
-                request.setAttribute("mensaje", "No se encontró un animal del horóscopo para la fecha ingresada.");
-                request.getRequestDispatcher("registrarse.jsp").forward(request, response);
-                return;
-            }
-
-            // Crear el usuario con el animal correcto
+            // Crear el objeto usuario con el animal obtenido
             Usuario usuario = new Usuario(0, nombre, username, email, fechaNacimiento, password, animal);
+
+            // Guardar el usuario en la base de datos
             usuarioDAO.crearUsuario(usuario);
 
-            request.setAttribute("mensaje", "Registro realizado con éxito.");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            // Redirigir con mensaje de éxito
+            request.setAttribute("alertMessage", "Usuario registrado exitosamente");
+            request.setAttribute("redirect", true); // Indicar redirección
+            request.getRequestDispatcher("registrarse.jsp").forward(request, response);
+
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("mensaje", "Error al registrar el usuario.");
+            request.setAttribute("alertMessage", "Error al registrar el usuario.");
+            request.setAttribute("redirect", false);
             request.getRequestDispatcher("registrarse.jsp").forward(request, response);
         }
     }

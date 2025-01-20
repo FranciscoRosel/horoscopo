@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("animal", usuario.getAnimal());
             response.sendRedirect("menu.jsp");
         } else {
-            // Credenciales incorrectas
+            // Credenciales incorrectas, pasar mensaje al index.jsp
             request.setAttribute("error", "Usuario o contraseña incorrectos.");
             request.getRequestDispatcher("index.jsp").forward(request, response);
         }

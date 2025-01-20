@@ -7,29 +7,24 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
 @WebServlet("/eliminarUsuario")
 public class EliminarUsuarioServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html; charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
-        try {
-            // Obtener el ID del usuario desde los parámetros
-            int id = Integer.parseInt(request.getParameter("id"));
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int userId = ((com.edutecno.modelo.Usuario) session.getAttribute("usuario")).getId();
 
-            // Eliminar el usuario con el ID proporcionado
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
-            usuarioDAO.eliminarUsuario(id);
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        usuarioDAO.eliminarUsuario(userId);
 
-            // Redirigir a la página de listado de usuarios
-            response.sendRedirect("listarUsuarios");
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Error al eliminar el usuario.");
-            request.getRequestDispatcher("listarUsuarios.jsp").forward(request, response);
-        }
+        // Invalidar la sesión después de eliminar el usuario
+        session.invalidate();
+
+        // Redirigir al index.jsp con un parámetro en la URL
+        response.sendRedirect("index.jsp?alert=Cuenta eliminada exitosamente");
     }
 }

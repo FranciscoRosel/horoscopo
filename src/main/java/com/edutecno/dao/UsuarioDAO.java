@@ -70,24 +70,33 @@ public class UsuarioDAO {
         }
     }
 
-    // Modificar usuario
-    public void modificarUsuario(Usuario usuario) {
-        String sql = "UPDATE usuarios SET nombre = ?, username = ?, email = ?, fecha_nacimiento = ?, password = ?, animal = ? WHERE id = ?";
+    // Modificar cuenta
+    public void modificarCuenta(Usuario usuario) {
+        String sql = "UPDATE usuarios SET nombre = ?, username = ?, email = ?, password = ?, fecha_nacimiento = ?, animal = ? WHERE id = ?";
+
         try (Connection conn = ConexionDB.getConexion();
              PreparedStatement pstm = conn.prepareStatement(sql)) {
 
+            // Obtener el nuevo animal del horóscopo desde la base de datos
+            String nuevoAnimal = obtenerAnimalPorFecha(usuario.getFechaNacimiento());
+            usuario.setAnimal(nuevoAnimal); // Actualizar en el objeto usuario
+
+            // Configurar los parámetros
             pstm.setString(1, usuario.getNombre());
             pstm.setString(2, usuario.getUsername());
             pstm.setString(3, usuario.getEmail());
-            pstm.setDate(4, new java.sql.Date(usuario.getFechaNacimiento().getTime()));
-            pstm.setString(5, usuario.getPassword());
+            pstm.setString(4, usuario.getPassword());
+            pstm.setDate(5, new java.sql.Date(usuario.getFechaNacimiento().getTime())); // Convertir a java.sql.Date
             pstm.setString(6, usuario.getAnimal());
             pstm.setInt(7, usuario.getId());
+
+            // Ejecutar la actualización
             pstm.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public List<Usuario> buscarUsuarios(String criterio) {
         List<Usuario> usuarios = new ArrayList<>();
         String sql = "SELECT id, nombre, username, email, fecha_nacimiento, password, animal " +

@@ -20,6 +20,10 @@
   <label for="email">Correo Electrónico:</label>
   <input type="email" id="email" name="email" value="${usuario.email}" required>
   <br>
+  <br>
+  <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+  <input type="date" id="fechaNacimiento" name="fechaNacimiento" value="<%= request.getAttribute("fechaNacimiento") %>" required>
+  <br>
   <label for="password">Nueva Contraseña:</label>
   <input type="password" id="password" name="password" value="${usuario.password}" required>
   <br>

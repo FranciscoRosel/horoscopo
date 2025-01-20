@@ -1,11 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="styles.css">
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="styles.css">
   <title>Registrarse</title>
 </head>
 <body>
@@ -31,9 +29,45 @@
   <br>
   <button type="submit">Registrarse</button>
 </form>
-<p style="color: red;">
-  ${requestScope.error}
-</p>
+
 <a href="index.jsp">Volver al inicio</a>
+
+<!-- Cuadro de diálogo personalizado (invisible inicialmente) -->
+<div id="overlay" style="display:none;"></div>
+<div id="customAlert" style="display:none;">
+  <p id="alertMessage"></p>
+  <button onclick="closeCustomAlert()">Aceptar</button>
+</div>
+
+<%
+  String alertMessage = (String) request.getAttribute("alertMessage");
+  Boolean redirect = (Boolean) request.getAttribute("redirect");
+%>
+
+<script>
+  // Mostrar cuadro de diálogo personalizado
+  function showCustomAlert(message) {
+    document.getElementById("alertMessage").innerText = message;
+    document.getElementById("customAlert").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
+  }
+
+  // Cerrar el cuadro de diálogo personalizado
+  function closeCustomAlert() {
+    document.getElementById("customAlert").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+    <% if (Boolean.TRUE.equals(redirect)) { %>
+    window.location.href = "index.jsp"; // Redirigir al index.jsp
+    <% } %>
+  }
+
+  <% if (alertMessage != null) { %>
+  // Llamar a la función con el mensaje después de cargar la página
+  window.onload = function() {
+    showCustomAlert("Tú Horóscopo Chino: <%= alertMessage %>");
+  };
+  <% } %>
+</script>
+
 </body>
 </html>
