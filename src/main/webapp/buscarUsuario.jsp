@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles.css">
-  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <title>Buscar Usuario</title>
 </head>
 <body>
@@ -27,7 +27,6 @@
       <th>Email</th>
       <th>Fecha de Nacimiento</th>
       <th>Animal</th>
-      <th>Acciones</th>
     </tr>
     </thead>
     <tbody>
@@ -39,9 +38,6 @@
         <td>${usuario.email}</td>
         <td>${usuario.fechaNacimiento}</td>
         <td>${usuario.animal}</td>
-        <td>
-          <a href="eliminarUsuario?id=${usuario.id}">Eliminar</a>
-        </td>
       </tr>
     </c:forEach>
     </tbody>
